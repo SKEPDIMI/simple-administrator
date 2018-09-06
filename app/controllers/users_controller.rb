@@ -35,7 +35,6 @@ class UsersController < ApplicationController
         format.json { render :new, json: @user.errors, status: :unprocessable_entity }
       end
     else
-      puts "GOT IT"
       @user.role = permission_code.role
 
       respond_to do |format|
