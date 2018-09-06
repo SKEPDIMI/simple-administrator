@@ -1,0 +1,42 @@
+<%= form_with(model: worker, local: true) do |form| %>
+  <% if worker.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(worker.errors.count, "error") %> prohibited this worker from being saved:</h2>
+
+      <ul>
+      <% worker.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :time_worked %>
+    <%= form.number_field :time_worked %>
+  </div>
+
+  <div class="field">
+    <%= form.label :responsibility %>
+    <%= form.text_field :responsibility %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pay %>
+    <%= form.text_field :pay %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
