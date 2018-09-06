@@ -25,8 +25,7 @@ class User < ApplicationRecord
   validates :password,
     presence: true,
     length: { minimum: 5, maximum: 255 }
-    
-  has_many :permissions, dependent: :destroy
-  has_many :job
+
+  has_many :jobs
   has_many :tasks
 end
