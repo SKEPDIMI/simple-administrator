@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     permission_code = PermissionCode.find_by(body: params[:user][:permission_code])
 
-    if !permission_code && current_user.role != 1
+    if !permission_code && !current_user_is(1) # 422 code if there is no permission and user is not admin
       respond_to do |format|
         @user.errors.add(:_, 'Invalid permission code provided.')
 
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         format.json { render :new, json: @user.errors, status: :unprocessable_entity }
       end
     else
-      @user.role = params[:user][:permission_code] || params[:user][:role]
+      @user.role = current_user_is(1) ? params[:user][:role] : params[:user][:permission_code]
 
       respond_to do |format|
         if @user.save
@@ -55,12 +55,29 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
+      if current_user.role === 1 || same_user(@user.id) # if the current_user is admin or is the same user being edited 
+        if @user.role === 1 && same_user(@user.id) # @user is an admin and you are not him (admin cannot edit admin)
+          @user.errors.add(:_, "Cannot edit #{@user.first_name} because they are an admin.")
+
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unauthorized }
+        elsif current_user_is(1) || @user.authenticate(user_params[:password]) # is authenticated OR is admin
+          if @user.update(user_params)
+            format.html { redirect_to @user, notice: 'User was successfully updated.' }
+            format.json { render :show, status: :ok, location: @user }
+          else
+            format.html { render :edit }
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
+        else
+          format.html { render :edit, notice: 'Failed authentication'}
+          format.json { render json: @user.errors, status: :unauthorized }
+        end
+      else # you are not admin and you are not this user
+        @user.errors.add(:_, "You are not permitted to edit #{@user.first_name}'s account.")
+
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unauthorized }
       end
     end
   end
