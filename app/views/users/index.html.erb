@@ -19,15 +19,16 @@
       <tr>
         <td><%= user.email %></td>
         <td>
-          <%= user.role === 1 ? 'Admin' : user.role === 2 ? 'Superintendent' : user.role === 3 ? 'Subcontractor' : null
-          %>
+          <%= readable_role(user.role)%>
         </td>
         <td><%= user.phone %></td>
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user_is 1 %>
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

@@ -39,6 +39,8 @@ class UsersController < ApplicationController
 
       respond_to do |format|
         if @user.save
+          permission_code.delete # Get rid of the permission to join
+          
           format.html { redirect_to @user, notice: 'User was successfully created.' }
           format.json { render :show, status: :created, location: @user }
         else
