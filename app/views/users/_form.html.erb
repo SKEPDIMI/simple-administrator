@@ -39,12 +39,23 @@
     <%= form.text_field :password_confirmation %>
   </div>
 
-  <% if needs_permission_code %>
+  <% if needs_permission_code && !current_user_is(1) %>
     <hr />
     <div class="field">
       <%= form.label :permission_code %>
 
       <%= form.text_field :permission_code %>
+    </div>
+  <% elsif current_user_is(1) %>
+    <div class="field">
+      <div class="field">
+        <%= form.label :role %>
+        <%= form.select :role do %>
+          <% [['Admin', 1], ['SuperIntendent', 2], ['SubContractor', 3]].each do |c| -%>
+            <%= content_tag(:option, c.first, value: c.last) %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   <% end %>
   <div class="actions">

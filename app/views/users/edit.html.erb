@@ -1,6 +1,9 @@
 <h1>Editing User</h1>
 
-<%= render 'form', user: @user, needs_permission_code: false %>
-
+<% if same_user(@user.id) || current_user_is(1) %>
+  <%= render 'form', user: @user, needs_permission_code: false %>
+<% else %>
+  <h1>You do not have access to this page</h1>
+<% end %>
 <%= link_to 'Show', @user %> |
 <%= link_to 'Back', users_path %>

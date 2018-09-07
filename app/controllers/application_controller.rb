@@ -1,11 +1,16 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :logged_in?, :current_user_is, :readable_role
+  helper_method :current_user, :logged_in?, :current_user_is, :readable_role, :same_user
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   def logged_in?
     !!current_user
+  end
+  def same_user(id)
+    return false if !logged_in?
+
+    current_user.id === id
   end
   def current_user_is(role)
     return false if !logged_in?
