@@ -11,7 +11,7 @@
 
 <p>
   <strong>Role:</strong>
-  <%= @user.role %>
+  <%= readable_role(@user.role) %>
 </p>
 
 <p>
@@ -19,7 +19,16 @@
   <%= @user.phone %>
 </p>
 
-<% if current_user_is(1) || same_user(@user.id) %>
+<% if same_user(@user.id) %>
+  "we are the same user"
+<% end %>
+<% if current_user_is_admin && @user.role != 1 %>
+  "we are admin and the user is not an admin"  
+<% end %>
+
+<%= link_to 'Show', users_path %>
+
+<% if we_can_edit(@user) %>
   <%= link_to 'Edit', edit_user_path(@user) %> |
   <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure you want to delete this account?' } %>
 <% end %>

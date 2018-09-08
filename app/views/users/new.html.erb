@@ -41,14 +41,14 @@
     <%= form.text_field :password_confirmation %>
   </div>
 
-  <% if !current_user_is(1) %>
+  <% if !current_user_is_admin %>
     <hr />
     <div class="field">
       <%= form.label :permission_code %>
 
       <%= form.text_field :permission_code %>
     </div>
-  <% elsif current_user_is(1) %>
+  <% elsif current_user_is_admin %>
     <div class="field">
       <div class="field">
         <%= form.label :role %>

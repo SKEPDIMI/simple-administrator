@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if current_user.role === 1 || same_user(@user.id) # if the current_user is admin or is the same user being edited 
+      if we_can_edit(@user) # if the current_user is admin or is the same user being edited 
         if @user.role === 1 && same_user(@user.id) # @user is an admin and you are not him (admin cannot edit admin)
           @user.errors.add(:_, "Cannot edit #{@user.first_name} because they are an admin.")
 
@@ -85,10 +85,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+      if we_can_edit(@user)
+        @user.destroy
+        
+        format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        @user.errors.add(:_, "You are not permitted to delete #{@user.first_name}'s account.'")
+
+        format.html { render :index }
+        format.json { render json: @user.errors, status: :unauthorized }
+      end
     end
   end
 

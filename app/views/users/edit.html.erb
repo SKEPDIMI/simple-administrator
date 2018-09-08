@@ -1,6 +1,6 @@
 <h1>Editing User</h1>
 
-<% if same_user(@user.id) || current_user_is(1) %>
+<% if we_can_edit(@user) %>
   <%= form_with(model: @user, local: true) do |form| %>
     <% if @user.errors.any? %>
       <div id="error_explanation">
