@@ -1,14 +1,20 @@
-<p id="notice"><%= notice %></p>
+<% if current_user_is_admin %>
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Body:</strong>
-  <%= @permission_code.body %>
-</p>
+  <p>
+    <strong>Code:</strong>
+    <%= @permission_code.body %>
+  </p>
 
-<p>
-  <strong>Role:</strong>
-  <%= @permission_code.role %>
-</p>
+  <p>
+    <strong>Role:</strong>
+    <%= readable_role(@permission_code.role) %>
+  </p>
 
-<%= link_to 'Edit', edit_permission_code_path(@permission_code) %> |
-<%= link_to 'Back', permission_codes_path %>
+  <%= link_to 'Edit', edit_permission_code_path(@permission_code) %> |
+  <%= link_to 'Back', permission_codes_path %>
+<% else %>
+  <i>You do not have permission to see this page</i>
+  <br>
+  <%= link_to 'Back home', jobs_path %>
+<% end %>

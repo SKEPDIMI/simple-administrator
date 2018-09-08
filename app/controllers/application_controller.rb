@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
     same_user(user.id) || (current_user_is_admin && user.role != 1) 
   end
   def readable_role(number)
+    number = number.to_i
     case
     when number == 1
       return 'Admin'

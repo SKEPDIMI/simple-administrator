@@ -27,12 +27,19 @@ class PermissionCodesController < ApplicationController
     @permission_code = PermissionCode.new(permission_code_params)
 
     respond_to do |format|
-      if @permission_code.save
-        format.html { redirect_to @permission_code, notice: 'Permission code was successfully created.' }
-        format.json { render :show, status: :created, location: @permission_code }
+      if current_user_is_admin
+        if @permission_code.save
+          format.html { redirect_to @permission_code, notice: 'Permission code was successfully created.' }
+          format.json { render :show, status: :created, location: @permission_code }
+        else
+          format.html { render :new }
+          format.json { render json: @permission_code.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :new }
-        format.json { render json: @permission_code.errors, status: :unprocessable_entity }
+        @permission_code.errors.add(:_, 'You are not allowed to create permission codes')
+
+        format.html { render :index }
+        format.json { render json: @permission_code.errors, status: :unauthorized }
       end
     end
   end
@@ -41,12 +48,19 @@ class PermissionCodesController < ApplicationController
   # PATCH/PUT /permission_codes/1.json
   def update
     respond_to do |format|
-      if @permission_code.update(permission_code_params)
-        format.html { redirect_to @permission_code, notice: 'Permission code was successfully updated.' }
-        format.json { render :show, status: :ok, location: @permission_code }
+      if current_user_is_admin
+        if @permission_code.update(permission_code_params)
+          format.html { redirect_to @permission_code, notice: 'Permission code was successfully updated.' }
+          format.json { render :show, status: :ok, location: @permission_code }
+        else
+          format.html { render :edit }
+          format.json { render json: @permission_code.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit }
-        format.json { render json: @permission_code.errors, status: :unprocessable_entity }
+        @permission_code.errors.add(:_, 'You are not allowed to create permission codes')
+
+        format.html { render :index }
+        format.json { render json: @permission_code.errors, status: :unauthorized }
       end
     end
   end
@@ -54,10 +68,17 @@ class PermissionCodesController < ApplicationController
   # DELETE /permission_codes/1
   # DELETE /permission_codes/1.json
   def destroy
-    @permission_code.destroy
     respond_to do |format|
-      format.html { redirect_to permission_codes_url, notice: 'Permission code was successfully destroyed.' }
-      format.json { head :no_content }
+      if current_user_is_admin
+        @permission_code.destroy
+        format.html { redirect_to permission_codes_url, notice: 'Permission code was successfully destroyed.' }
+        format.json { head :no_content }
+      else 
+        @permission_code.errors.add(:_, 'You are not allowed to create permission codes')
+
+        format.html { render :index }
+        format.json { render json: @permission_code.errors, status: :unauthorized }
+      end
     end
   end
 
