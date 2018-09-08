@@ -56,22 +56,12 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if we_can_edit(@user) # if the current_user is admin or is the same user being edited 
-        if @user.role === 1 && same_user(@user.id) # @user is an admin and you are not him (admin cannot edit admin)
-          @user.errors.add(:_, "Cannot edit #{@user.first_name} because they are an admin.")
-
-          format.html { render :edit }
-          format.json { render json: @user.errors, status: :unauthorized }
-        elsif current_user_is(1) || @user.authenticate(user_params[:password]) # is authenticated OR is admin
-          if @user.update(user_params)
-            format.html { redirect_to @user, notice: 'User was successfully updated.' }
-            format.json { render :show, status: :ok, location: @user }
-          else
-            format.html { render :edit }
-            format.json { render json: @user.errors, status: :unprocessable_entity }
-          end
+        if @user.update(user_params)
+          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
         else
-          format.html { render :edit, notice: 'Failed authentication'}
-          format.json { render json: @user.errors, status: :unauthorized }
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       else # you are not admin and you are not this user
         @user.errors.add(:_, "You are not permitted to edit #{@user.first_name}'s account.")
@@ -113,9 +103,7 @@ class UsersController < ApplicationController
         :email,
         :phone,
         :first_name,
-        :last_name,
-        :password_confirmation,
-        :password
+        :last_name
       )
     end
     def permission_params
