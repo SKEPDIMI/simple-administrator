@@ -11,5 +11,5 @@ class Job < ApplicationRecord
 
   belongs_to :user # BELONGS to superintendent
   has_many :tasks, dependent: :destroy
-  has_many :sub_contractors, through: :tasks
+  has_many :sub_contractors, -> { distinct }, through: :tasks
 end
