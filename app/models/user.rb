@@ -24,7 +24,9 @@ class User < ApplicationRecord
   has_secure_password
   validates :password,
     presence: true,
-    length: { minimum: 5, maximum: 255 }
+    length: { minimum: 5, maximum: 255 },
+    # updating user without providing password
+    allow_nil: true
 
   has_many :jobs
   has_many :tasks
