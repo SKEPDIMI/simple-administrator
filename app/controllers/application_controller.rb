@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def we_have_permission_for_job?(job)
-    return false if !logged_in?
+    return false if !logged_in? || !job
 
     we_are_superintendent = job.user_id == current_user.id
 

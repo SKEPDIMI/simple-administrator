@@ -85,6 +85,8 @@ class PermissionCodesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_permission_code
+      return nil if !current_user_is_admin
+      
       @permission_code = PermissionCode.find(params[:id])
     end
 

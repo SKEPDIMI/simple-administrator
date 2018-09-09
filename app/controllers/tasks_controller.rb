@@ -68,7 +68,15 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
+      return nil if !params[:id] || !logged_in?
+
       @task = Task.find(params[:id])
+
+      if we_have_permission_for_job?(@task.job)
+        return @task
+      else
+        return nil
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

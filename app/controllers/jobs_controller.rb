@@ -25,9 +25,14 @@ class JobsController < ApplicationController
   # POST /jobs.json
   def create
     @job = Job.new(job_params)
+    @job.user_id = current_user.id if logged_in?
 
     respond_to do |format|
-      if @job.save
+      if !logged_in?
+        @job.errors.add(:_, 'You are not logged in')
+        format.html { render :new }
+        format.json { render json: @job.errors, status: :unauthorized }
+      elsif @job.save
         format.html { redirect_to @job, notice: 'Job was successfully created.' }
         format.json { render :show, status: :created, location: @job }
       else
@@ -64,7 +69,15 @@ class JobsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_job
+      return nil if !params[:id]
+
       @job = Job.find(params[:id])
+
+      if we_have_permission_for_job?(@job)
+        return @job
+      else
+        return nil
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

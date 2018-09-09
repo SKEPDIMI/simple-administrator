@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     permission_code = PermissionCode.find_by(body: params[:user][:permission_code])
 
-    if !permission_code && !current_user_is(1) # 422 code if there is no permission and user is not admin
+    if !permission_code && !current_user_is_admin # 422 code if there is no permission and user is not admin
       respond_to do |format|
         @user.errors.add(:_, 'Invalid permission code provided.')
 
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         format.json { render :new, json: @user.errors, status: :unprocessable_entity }
       end
     else
-      @user.role = current_user_is(1) ? params[:user][:role] : params[:user][:permission_code]
+      @user.role = current_user_is_admin ? params[:user][:role] : params[:user][:permission_code]
 
       respond_to do |format|
         if @user.save
@@ -93,6 +93,8 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
+      return nil if !params[:id]
+
       @user = User.find(params[:id])
     end
 
@@ -103,7 +105,9 @@ class UsersController < ApplicationController
         :email,
         :phone,
         :first_name,
-        :last_name
+        :last_name,
+        :password,
+        :password_confirmation
       )
     end
     def permission_params
