@@ -19,7 +19,7 @@
   <%= @user.phone %>
 </p>
 
-<% if same_user(@user.id) %>
+<% if same_user?(@user.id) %>
   "we are the same user"
 <% end %>
 <% if current_user_is_admin && @user.role != 1 %>
