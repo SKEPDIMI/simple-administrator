@@ -84,7 +84,7 @@ class UsersController < ApplicationController
       else
         @user.errors.add(:_, "You are not permitted to delete #{@user.first_name}'s account.'")
 
-        format.html { render :index }
+        format.html { render :show, location: @user }
         format.json { render json: @user.errors, status: :unauthorized }
       end
     end

@@ -1,0 +1,27 @@
+<h1>Subcontractors</h1>
+
+<table>
+  <thead>
+      <tr>
+        <th>Name</th>
+        <th>Tasks</th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+  <tbody>
+    <% @sub_contractors.each do |sub_contractor| %>
+      <tr>
+        <td><%= link_to sub_contractor.name, sub_contractor %></td>
+        <td><%= sub_contractor.tasks.length %></td>
+        <% if logged_in? %>
+          <td><%= link_to 'Edit', edit_sub_contractor_path(sub_contractor) %></td>
+          <td><%= link_to 'Destroy', sub_contractor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+
+<% if logged_in? %>
+  <%= link_to 'Create new subcontractor', new_sub_contractor_path %>
+<% end %>

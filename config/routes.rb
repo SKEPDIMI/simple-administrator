@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :tasks
   resources :jobs
   resources :users
+  resources :sub_contractors
 
   root 'jobs#index'
   get '/login', to: 'sessions#new'

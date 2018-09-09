@@ -1,0 +1,11 @@
+<h1>New Subcontractor</h1>
+
+<% if logged_in? %>
+  <%= render 'form', sub_contractor: @sub_contractor %>
+<% else %>
+  <i>You are not allowed to create users</i>
+<% end %>
+
+<br>
+
+<%= link_to 'All Subcontractors', sub_contractors_path %>

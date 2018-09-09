@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Subcontractor</h1>
+
+<p>
+  <strong><%= @sub_contractor.name %></strong>
+</p>
+<p>
+  <strong>Tasks:</strong>
+  <span><%= @sub_contractor.tasks.length%></span>
+</p>
+
+<br>
+
+<% if logged_in? %>
+  <%= link_to 'Edit', edit_sub_contractor_path(@sub_contractor) %> |
+  <%= link_to 'Destroy', @sub_contractor, method: :destroy, data: { confirm: 'Are you sure?' } %>
+  <br>
+<% end%>
+
+<%= link_to 'All Subcontractors', sub_contractors_path %>
