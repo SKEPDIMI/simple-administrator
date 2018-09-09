@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
                 :current_user_is_admin,
                 :readable_role,
                 :same_user?,
-                :we_can_edit
+                :we_can_edit_user?,
+                :we_have_permission_for_job?
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
   # we can edit a user if
   # we are the user
   # OR we are an admin and they are not an admin (*Admins should not edit other admins unless its their own account)
-  def we_can_edit(user)
+  def we_can_edit_user?(user)
     return false if !logged_in?
 
     we_are_same_user = same_user?(user.id)
@@ -42,5 +43,13 @@ class ApplicationController < ActionController::Base
     when 2
       return 'Superintendent'
     end
+  end
+
+  def we_have_permission_for_job?(job)
+    return false if !logged_in?
+
+    we_are_superintendent = job.user_id == current_user.id
+
+    we_are_superintendent or current_user_is_admin
   end
 end
