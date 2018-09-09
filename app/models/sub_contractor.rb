@@ -2,6 +2,6 @@ class SubContractor < ApplicationRecord
   validates :name,
     presence: true
   
-  has_many :tasks
-  has_and_belongs_to_many :jobs
+  has_many :tasks, dependent: :destroy
+  belongs_to :jobs
 end
