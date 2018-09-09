@@ -25,7 +25,7 @@
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td><%= link_to 'Show', user %></td>
-        <% if we_can_edit(user) %>
+        <% if we_can_edit_user?(user) %>
           <td><%= link_to 'Edit', edit_user_path(user) %></td>
           <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
@@ -34,6 +34,6 @@
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New User', new_user_path %>
+<% if current_user_is_admin %>
+  <%= link_to 'New User', new_user_path %>
+<% end %>
