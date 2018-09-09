@@ -12,8 +12,10 @@
 
 <p>
   <strong>End date:</strong>
-  <%= @job.end_date %>
+  <%= @job.end_date || 'Ongoing' %>
 </p>
 
+<!-- HERE SHOW THE TASKS -->
+
 <%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Back', jobs_path %>
+<%= link_to 'Jobs', jobs_path %>

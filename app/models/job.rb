@@ -3,10 +3,13 @@ class Job < ApplicationRecord
     presence: true,
     length: { minimum: 1, maximum: 255 }
 
-  validates :start_data,
+  validates :start_date,
     presence: true
 
-  validates :user_id, presence: true
+  validates :user_id, # the superintendent id
+    presence: true
 
-  has_and_belongs_to_many :users # BELONGS to superintendent HAS MANY subcontractors
+  belongs_to :user # BELONGS to superintendent
+  has_many :sub_contractors
+  has_many :tasks
 end

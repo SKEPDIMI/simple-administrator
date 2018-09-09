@@ -3,6 +3,12 @@ class Task < ApplicationRecord
     presence: true,
     length: { minimum: 1, maximum: 255 }
 
-  belongs_to :user
-  has_many :workers #, dependent: :destroy ? has many workers, when the task is deleted so are the workers
+  validates :job_id,
+    presence: true
+
+  validates :sub_contractor_id,
+    presence: true
+
+  belongs_to :sub_contractor
+  belongs_to :job
 end
