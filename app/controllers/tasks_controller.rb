@@ -15,10 +15,14 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    @sub_contractors = SubContractor.all
+    @jobs = Job.all
   end
 
   # GET /tasks/1/edit
   def edit
+    @sub_contractors = SubContractor.all
+    @jobs = Job.all
   end
 
   # POST /tasks
@@ -69,6 +73,10 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:title)
+      params.require(:task).permit(
+        :title,
+        :sub_contractor_id,
+        :job_id
+      )
     end
 end

@@ -1,21 +1,56 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @job.title %>
-</p>
+<% if we_have_permission_for_job?(@job) %>
+  <h2>
+    <strong>Job:</strong>
+    <%= @job.title %>
+  </h2>
+  <p>
+    <strong>Superintendent:</strong>
+    <%= link_to "#{@job.user.last_name}, #{@job.user.first_name}", @job.user %>
+  </p>
+  <p>
+    <strong>Start date:</strong>
+    <%= @job.start_date %>
+  </p>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @job.start_date %>
-</p>
+  <p>
+    <strong>End date:</strong>
+    <%= @job.end_date || 'Ongoing' %>
+  </p>
 
-<p>
-  <strong>End date:</strong>
-  <%= @job.end_date || 'Ongoing' %>
-</p>
+  <% if @job.tasks.any? %>
+    <h2>Tasks</h2>
 
-<!-- HERE SHOW THE TASKS -->
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>SubContractor</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-<%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Jobs', jobs_path %>
+      <tbody>
+        <% @job.tasks.each do |task| %>
+          <tr>
+            <td><%= task.title %></td>
+            <td><%= link_to task.sub_contractor.name, 'task.sub_contractor' %></td>
+            <td><%= link_to 'Show', task %></td>
+            <td><%= link_to 'Edit', edit_task_path(task) %></td>
+            <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <i>This job has no tasks</i>
+  <% end %>
+  <%= link_to 'New Task', new_task_path %>
+  <br>
+  <%= link_to 'Jobs', jobs_path %> | 
+  <%= link_to 'Edit', edit_job_path(@job) %>
+<% else %>
+  <i>You do not have permission to see this job</i><br>
+  <%= link_to 'Jobs', jobs_path %>
+<% end %>

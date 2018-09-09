@@ -1,8 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
+<h2>
+  <strong>Task:</strong>
   <%= @task.title %>
+</h2>
+<p>
+  <strong>SubContractor</strong>
+  <%= link_to @task.sub_contractor.name, 'task.sub_contractor' %>
+</p>
+<p>
+  <strong>Job</strong>
+  <%= link_to @task.job.title, @task.job %>
 </p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |

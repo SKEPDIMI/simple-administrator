@@ -16,6 +16,20 @@
     <%= form.text_field :title %>
   </div>
 
+  <%= form.label :job_id %>
+  <%= form.select :job_id do %>
+    <% @jobs.each do |j| -%>
+      <%= content_tag(:option, j.title, value: j.id) %>
+    <% end %>
+  <% end %>
+
+  <%= form.label :sub_contractor_id %>
+  <%= form.select :sub_contractor_id do %>
+    <% @sub_contractors.each do |s| -%>
+      <%= content_tag(:option, s.name, value: s.id) %>
+    <% end %>
+  <% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>
