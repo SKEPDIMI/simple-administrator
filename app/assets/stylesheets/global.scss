@@ -1,8 +1,17 @@
+body {
+  padding-top: 5em;
+}
+
 .header {
+  background-color: bisque;
   display: inline-flex;
   align-items: center;
   justify-content: space-around;
-  width: 100%;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 
   h1 {
     margin-right: auto;
