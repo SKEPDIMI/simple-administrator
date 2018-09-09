@@ -1,6 +1,10 @@
 <h1>Editing Job</h1>
 
-<%= render 'form', job: @job %>
+<% if we_have_permission_for_job(@job) %>
+  <%= render 'form', job: @job %>
 
-<%= link_to 'Show', @job %> |
+  <%= link_to 'Show', @job %> |
+<% else %>
+  <i>You do not have permission to see this job</i>
+<% end %>
 <%= link_to 'Back', jobs_path %>

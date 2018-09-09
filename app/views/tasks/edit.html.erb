@@ -1,6 +1,13 @@
 <h1>Editing Task</h1>
 
-<%= render 'form', task: @task %>
+<% if @task %>
+  <%= render 'form', task: @task %>
 
-<%= link_to 'Show', @task %> |
-<%= link_to 'Back', tasks_path %>
+  <%= link_to 'Back to task', @task %> |
+  <%= link_to 'Job tasks', @task.job %> |
+<% else %>
+  <i>You do not have permission to see this task</i>
+  <br>
+<% end %>
+
+<%= link_to 'All tasks', tasks_path %>

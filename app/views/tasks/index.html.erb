@@ -1,27 +1,36 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Tasks</h1>
+<% if logged_in? && !current_user_is_admin %>
+  <h1>My Tasks</h1>
+<% else %>
+  <h1>Tasks</h1>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>SubContractor</th>
-      <th>Job</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @tasks.each do |task| %>
+<% if @tasks.any? %>
+  <table>
+    <thead>
       <tr>
-        <td><%= task.title %></td>
-        <td><%= link_to task.sub_contractor.name, 'task.sub_contractor' %></td>
-        <td><%= link_to task.job.title, task.job %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Title</th>
+        <th>SubContractor</th>
+        <th>Job</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @tasks.each do |task| %>
+        <% next if !we_have_permission_for_job?(task.job) %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= link_to task.sub_contractor.name, 'task.sub_contractor' %></td>
+          <td><%= link_to task.job.title, task.job %></td>
+          <td><%= link_to 'Show', task %></td>
+          <td><%= link_to 'Edit', edit_task_path(task) %></td>
+          <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <i>There are no tasks</i>
+<% end %>

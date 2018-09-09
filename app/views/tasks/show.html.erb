@@ -1,17 +1,25 @@
 <p id="notice"><%= notice %></p>
 
-<h2>
-  <strong>Task:</strong>
-  <%= @task.title %>
-</h2>
-<p>
-  <strong>SubContractor</strong>
-  <%= link_to @task.sub_contractor.name, 'task.sub_contractor' %>
-</p>
-<p>
-  <strong>Job</strong>
-  <%= link_to @task.job.title, @task.job %>
-</p>
+<% if @task %>
+  <h2>
+    <strong>Task:</strong>
+    <%= @task.title %>
+  </h2>
+  <p>
+    <strong>SubContractor</strong>
+    <%= link_to @task.sub_contractor.name, 'task.sub_contractor' %>
+  </p>
+  <p>
+    <strong>Job</strong>
+    <%= link_to @task.job.title, @task.job %>
+  </p>
 
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Tasks', tasks_path %>
+  <%= link_to 'Edit', edit_task_path(@task) %> |
+  <%= link_to 'Destroy', @task, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <br>
+  <%= link_to 'Job tasks', @task.job %> |
+<% else %>
+  <i>You do not have permission for this job</i>
+  <br>
+<% end %>
+<%= link_to 'All tasks', tasks_path %>
