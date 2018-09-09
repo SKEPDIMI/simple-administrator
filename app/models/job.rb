@@ -10,6 +10,6 @@ class Job < ApplicationRecord
     presence: true
 
   belongs_to :user # BELONGS to superintendent
-  has_many :sub_contractors
   has_many :tasks, dependent: :destroy
+  has_many :sub_contractors, through: :tasks
 end
