@@ -25,18 +25,11 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.role = current_user_is_admin ? params[:user][:role] : params[:user][:permission_code]
+    
     permission_code = PermissionCode.find_by(body: params[:user][:permission_code])
 
-    if !permission_code && !current_user_is_admin # 422 code if there is no permission and user is not admin
-      respond_to do |format|
-        @user.errors.add(:_, 'Invalid permission code provided.')
-
-        format.html { render :new }
-        format.json { render :new, json: @user.errors, status: :unprocessable_entity }
-      end
-    else
-      @user.role = current_user_is_admin ? params[:user][:role] : params[:user][:permission_code]
-
+    if permission_code or current_user_is_admin
       respond_to do |format|
         if @user.save
           permission_code.delete if permission_code # Get rid of the permission to join if used
@@ -47,6 +40,13 @@ class UsersController < ApplicationController
           format.html { render :new }
           format.json { render :new, json: @user.errors, status: :unprocessable_entity }
         end
+      end
+    else
+      respond_to do |format|
+        @user.errors.add(:_, 'Invalid permission code provided.')
+
+        format.html { render :new }
+        format.json { render :new, json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
