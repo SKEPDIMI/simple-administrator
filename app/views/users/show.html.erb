@@ -20,6 +20,30 @@
 </p>
 
 <% if we_can_edit_user?(@user) %>
+  <% if @user.jobs.any? %>
+    <p>
+      <strong>Jobs:</strong>
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Start date</td>
+            <td>End date</td>
+            <td>Tasks</td>
+          </tr>
+        </thead>
+        <% @user.jobs.each do |job| %>
+          <tr>
+            <td><%= link_to job.title, job %></td>
+            <td><%= job.start_date %></td>
+            <td><%= job.end_date || 'Ongoing' %></td>
+            <td><%= job.tasks.length %></td>
+          </tr>
+        <% end %>
+      </table>
+    </p>
+  <% end %>
+
   <%= link_to 'Edit', edit_user_path(@user) %> |
   <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure you want to delete this account?' } %>
 <% end %>
