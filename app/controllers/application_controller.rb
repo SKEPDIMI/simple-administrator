@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
                 :readable_role,
                 :same_user?,
                 :we_can_edit_user?,
-                :we_have_permission_for_job?
+                :we_have_permission_for_job?,
+                :current_user_has_low_permission_for_job
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -22,6 +23,32 @@ class ApplicationController < ActionController::Base
     return false if !logged_in?
     
     current_user.role === 1
+  end
+  def current_user_is_project_manager
+    return false if !logged_in?
+    
+    current_user.role === 2
+  end
+
+  # can CREATE / EDIT / DESTROY a job
+  def current_user_has_high_permission_for_job(job = nil)
+    return false if !logged_in?
+
+    if job
+      # user is manager of job
+      current_user_is_admin or job.project_manager_id == current_user.id
+    else
+      # user is an admin or manager
+      current_user.role <= 2
+    end
+  end
+
+  # can READ a job
+  # can CREATE / EDIT / DESTROY a jobs tasks
+  def current_user_has_low_permission_for_job(job)
+    return false if !logged_in?
+
+    current_user_is_admin or job.superintendent_id == current_user.id or job.project_manager_id == current_user.id
   end
   
   # we can edit a user if
@@ -41,6 +68,8 @@ class ApplicationController < ActionController::Base
     when 1
       return 'Admin'
     when 2
+      return 'Manager'
+    when 3
       return 'Superintendent'
     end
   end
