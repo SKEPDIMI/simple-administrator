@@ -28,6 +28,4 @@ class User < ApplicationRecord
     # updating user without providing password
     allow_nil: true
 
-  has_many :jobs
-  has_many :tasks
 end
