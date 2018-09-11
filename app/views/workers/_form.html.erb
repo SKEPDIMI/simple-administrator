@@ -1,0 +1,43 @@
+<%= form_with(model: worker, local: true) do |form| %>
+  <% if worker.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(worker.errors.count, "error") %> prohibited this worker from being saved:</h2>
+
+      <ul>
+      <% worker.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if logged_in? %>
+    <div class="field">
+      <%= form.label :first_name %>
+      <%= form.text_field :first_name %>
+    </div>
+
+    <div class="field">
+      <%= form.label :last_name %>
+      <%= form.text_field :last_name %>
+    </div>
+
+    <div class="field">
+      <%= form.label :pay %>
+      $USD <%= form.text_field :pay %>
+    </div>
+
+    <%= form.label :sub_contractor_id %>
+    <%= form.select :sub_contractor_id do %>
+      <% @sub_contractors.each do |s| -%>
+        <%= content_tag(:option, s.name, value: s.id) %>
+      <% end %>
+    <% end %>
+
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% else %>
+    <i>Only logged in users can manipulate workers</i>
+  <% end %>
+<% end %>

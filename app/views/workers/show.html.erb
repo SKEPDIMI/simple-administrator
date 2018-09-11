@@ -1,0 +1,27 @@
+<h1>Worker</h1>
+
+<% if logged_in? %>
+  <p>
+    <strong>First name</strong>
+    <%= @worker.first_name %>
+  </p>
+  <p>
+    <strong>Last name</strong>
+    <%= @worker.last_name %>
+  </p>
+  <p>
+    <strong>Pay</strong>
+    <%= "$ #{@worker.pay}" %>
+  </p>
+  <p>
+    <strong>Subcontractor</strong>
+    <%= @worker.sub_contractor.name%>
+  </p>
+
+  <%= link_to 'Edit', edit_worker_path(@worker) %> |
+  <%= link_to 'Delete', @worker, method: :destroy, data: { confirm: 'Are you sure?' } %>
+<% else %>
+  <i>Only logged in users can view workers</i>
+<% end %>
+<br>
+<%= link_to 'Back to workers', workers_path %>
