@@ -1,6 +1,6 @@
 <h1>Editing Job</h1>
 
-<% if we_have_permission_for_job(@job) %>
+<% if we_have_permission_for_job?(@job) %>
   <%= render 'form', job: @job %>
 
   <%= link_to 'Show', @job %> |
