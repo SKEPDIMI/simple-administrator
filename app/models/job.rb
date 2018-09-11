@@ -6,10 +6,12 @@ class Job < ApplicationRecord
   validates :start_date,
     presence: true
 
-  validates :user_id, # the superintendent id
+  validates :project_manager_id, # jobs need a project manager
     presence: true
 
-  belongs_to :user # BELONGS to superintendent
+  belongs_to :superintendent, foreign_key: 'superintendent_id', class_name: 'User'
+  belongs_to :project_manager, foreign_key: 'project_manager_id', class_name: 'User'
+
   has_many :tasks, dependent: :destroy
   has_many :sub_contractors, -> { distinct }, through: :tasks
 end
