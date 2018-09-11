@@ -5,11 +5,12 @@
 <% else %>
   <h1>Jobs</h1>
 <% end %>
-<% if @jobs.any? && logged_in? %>
+<% if @jobs.any? %>
   <table>
     <thead>
       <tr>
         <th>Job</th>
+        <th>Manager</th>
         <th>Superintendent</th>
         <th>Start date</th>
         <th>End date</th>
@@ -20,10 +21,10 @@
 
     <tbody>
       <% @jobs.each do |job| %>
-        <% next if !we_have_permission_for_job?(job) %>
         <tr>
           <td><%= link_to job.title, job %></td>
-          <td><%= link_to "#{job.user.last_name}, #{job.user.first_name}", job.user %></td>
+          <td><%= link_to "#{job.project_manager.last_name}, #{job.project_manager.first_name}", job.project_manager %></td>
+          <td><%= link_to "#{job.superintendent.last_name}, #{job.superintendent.first_name}", job.superintendent %></td>
           <td><%= job.start_date %></td>
           <td><%= job.end_date || 'Ongoing' %></td>
           <td><%= job.tasks.length %></td>

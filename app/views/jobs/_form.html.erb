@@ -25,7 +25,26 @@
     <%= form.label :end_date %>
     <%= form.datetime_select :end_date %>
   </div>
+  
+  <% if current_user_is_admin %>
+    <% if @project_managers.any? %>
+      <%= form.label 'Project manager' %>
+      <%= form.select :project_manager_id do %>
+        <% @project_managers.each do |s| -%>
+          <%= content_tag(:option, "#{s.first_name} #{s.last_name}", value: s.id) %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <i>There are no project managers available!</i>
+    <% end %>
+  <% end %>
 
+  <%= form.label 'Project manager' %>
+  <%= form.select :superintendent_id do %>
+    <% @superintendents.each do |s| -%>
+      <%= content_tag(:option, "#{s.first_name} #{s.last_name}", value: s.id) %>
+    <% end %>
+  <% end %>
   <div class="actions">
     <%= form.submit %>
   </div>
