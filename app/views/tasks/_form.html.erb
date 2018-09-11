@@ -23,14 +23,19 @@
     <% end %>
   <% end %>
 
-  <%= form.label :sub_contractor_id %>
-  <%= form.select :sub_contractor_id do %>
-    <% @sub_contractors.each do |s| -%>
-      <%= content_tag(:option, s.name, value: s.id) %>
+  <% if @sub_contractors.any? %>
+    <%= form.label :sub_contractor_id %>
+    <%= form.select :sub_contractor_id do %>
+      <% @sub_contractors.each do |s| %>
+        <%= content_tag(:option, s.name, value: s.id) %>
+      <% end %>
     <% end %>
-  <% end %>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% else %>
+    <br/>
+    <i>There are no subcontractors available</i>
+  <% end %>
 <% end %>
