@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
                 :readable_role,
                 :same_user?,
                 :we_can_edit_user?,
-                :we_have_permission_for_job?,
-                :current_user_has_low_permission_for_job
+                :current_user_has_low_permission_for_job,
+                :current_user_has_high_permission_for_job
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
   def logged_in?
     !!current_user
   end
-  def same_user?(id)
-    return false if !logged_in?
+  def same_user?(user)
+    return false if !logged_in? or !user
 
-    current_user.id === id
+    current_user.id === user.id
   end
   def current_user_is_admin
     return false if !logged_in?
@@ -45,8 +45,9 @@ class ApplicationController < ActionController::Base
 
   # can READ a job
   # can CREATE / EDIT / DESTROY a jobs tasks
+  # use `logged_in?` if no job is provided
   def current_user_has_low_permission_for_job(job)
-    return false if !logged_in?
+    return false if !logged_in? or !job
 
     current_user_is_admin or job.superintendent_id == current_user.id or job.project_manager_id == current_user.id
   end
@@ -57,7 +58,7 @@ class ApplicationController < ActionController::Base
   def we_can_edit_user?(user)
     return false if !logged_in?
 
-    we_are_same_user = same_user?(user.id)
+    we_are_same_user = same_user?(user)
     we_have_admin_permission_to_edit = current_user_is_admin && user.role != 1 # admins cannot edit other admins
 
     we_are_same_user or we_have_admin_permission_to_edit 
@@ -72,13 +73,5 @@ class ApplicationController < ActionController::Base
     when 3
       return 'Superintendent'
     end
-  end
-
-  def we_have_permission_for_job?(job)
-    return false if !logged_in? || !job
-
-    we_are_superintendent = job.user_id == current_user.id
-
-    we_are_superintendent or current_user_is_admin
   end
 end
