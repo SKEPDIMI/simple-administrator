@@ -1,13 +1,16 @@
 <div class="header">
   <h1>Simple admin</h1>
-  <%= link_to 'Users', users_path %>
 
   <% if logged_in? %>
+    <% if current_user.role == 1 %>
+      <%= link_to 'Users', users_path %>
+      <%= link_to 'Permissions', permission_codes_path %>
+    <% end %>
+    
     <%= link_to 'Jobs', jobs_path %>
     <%= link_to 'Subcontractors', sub_contractors_path %>
     <%= link_to 'Workers', workers_path %>
     <%= link_to 'Account', current_user %>
-    <%= link_to 'Permissions', permission_codes_path %>
     <%= link_to 'Log out', login_path, method: :delete %>
   <% else %>
     <%= link_to 'Create account', new_user_path %>
