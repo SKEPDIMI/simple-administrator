@@ -37,8 +37,10 @@
       <%= form.submit %>
     </div>
   <% end %>
+
+  <%= link_to 'Show', @user %> |
 <% else %>
-  <h1>You do not have access to this page</h1>
+  <i>You do not have access to this page</i>
 <% end %>
-<%= link_to 'Show', @user %> |
+
 <%= link_to 'Back to users', users_path %>

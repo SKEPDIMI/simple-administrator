@@ -2,37 +2,43 @@
 
 <h1>Users</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Phone</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
+<% if !current_user_is_admin %>
+  <i>You do not have permission to view this page</i>
+<% elsif @users.any? %>
+  <table>
+    <thead>
       <tr>
-        <td><%= user.email %></td>
-        <td>
-          <%= readable_role(user.role)%>
-        </td>
-        <td><%= user.phone %></td>
-        <td><%= user.first_name %></td>
-        <td><%= user.last_name %></td>
-        <td><%= link_to 'Show', user %></td>
-        <% if we_can_edit_user?(user) %>
-          <td><%= link_to 'Edit', edit_user_path(user) %></td>
-          <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Phone</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email %></td>
+          <td>
+            <%= readable_role(user.role)%>
+          </td>
+          <td><%= user.phone %></td>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
+          <td><%= link_to 'Show', user %></td>
+          <% if we_can_edit_user?(user) %>
+            <td><%= link_to 'Edit', edit_user_path(user) %></td>
+            <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <i>There are no users!</i>
+<% end %>
 
 <% if current_user_is_admin %>
   <%= link_to 'New User', new_user_path %>

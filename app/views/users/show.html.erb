@@ -1,29 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Role:</strong>
-  <%= readable_role(@user.role) %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @user.phone %>
-</p>
-
 <% if we_can_edit_user?(@user) %>
+  <p>
+    <h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </p>
+
+  <p>
+    <strong>Role:</strong>
+    <%= readable_role(@user.role) %>
+  </p>
+
+  <p>
+    <strong>Phone:</strong>
+    <%= @user.phone %>
+  </p>
+
   <%= link_to 'Edit', edit_user_path(@user) %> |
   <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure you want to delete this account?' } %>
+<% else %>
+  <i>You are not allowed to view this page</i>
 <% end %>
-
-<br> 
+<br>
 
 <%= link_to 'Back to users', users_path %>
