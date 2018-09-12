@@ -7,11 +7,19 @@
   </h2>
   <p>
     <strong>Superintendent:</strong>
-    <%= link_to "#{@job.superintendent.last_name}, #{@job.superintendent.first_name}", @job.superintendent %>
+    <% if @job.superintendent %>
+      <%= link_to "#{@job.superintendent.last_name}, #{@job.superintendent.first_name}", @job.superintendent %>
+    <% else %>
+      <i>No superintendent exists</i>
+    <% end %>
   </p>
   <p>
     <strong>Manager:</strong>
-    <%= link_to "#{@job.project_manager.last_name}, #{@job.project_manager.first_name}", @job.superintendent %>
+    <% if @job.project_manager %>
+      <%= link_to "#{@job.project_manager.last_name}, #{@job.project_manager.first_name}", @job.superintendent %>
+    <% else %>
+      <i>No project manager exists</i>
+    <% end %>
   </p>
   <p>
     <strong>Start date:</strong>
@@ -39,7 +47,11 @@
         <% @job.tasks.each do |task| %>
           <tr>
             <td><%= link_to task.title, task %></td>
-            <td><%= link_to task.sub_contractor.name, task.sub_contractor %></td>
+            <% if task.sub_contractor %>
+              <td><%= link_to task.sub_contractor.name, task.sub_contractor %></td>
+            <% else %>
+              <td><i>No subcontractor exists for this task</i></td>
+            <% end %>
             <td><%= link_to 'Show', task %></td>
             <td><%= link_to 'Edit', edit_task_path(task) %></td>
             <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>

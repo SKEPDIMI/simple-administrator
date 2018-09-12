@@ -23,8 +23,16 @@
       <% @jobs.each do |job| %>
         <tr>
           <td><%= link_to job.title, job %></td>
-          <td><%= link_to "#{job.project_manager.last_name}, #{job.project_manager.first_name}", job.project_manager %></td>
-          <td><%= link_to "#{job.superintendent.last_name}, #{job.superintendent.first_name}", job.superintendent %></td>
+          <% if job.project_manager %>
+            <td><%= link_to "#{job.project_manager.last_name}, #{job.project_manager.first_name}", job.project_manager %></td>
+          <% else %>
+            <td><i>No project manager available</i></td>
+          <% end %>
+          <% if job.superintendent %>
+            <td><%= link_to "#{job.superintendent.last_name}, #{job.superintendent.first_name}", job.superintendent %></td>
+          <% else %>
+            <td><i>No superintendent available</i></td>
+          <% end %>
           <td><%= job.start_date %></td>
           <td><%= job.end_date || 'Ongoing' %></td>
           <td><%= job.tasks.length %></td>
