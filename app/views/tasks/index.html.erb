@@ -19,7 +19,7 @@
 
     <tbody>
       <% @tasks.each do |task| %>
-        <% next if !we_have_permission_for_job?(task.job) %>
+        <% next if !current_user_has_low_permission_for_job(task.job) %>
         <tr>
           <td><%= task.title %></td>
           <% if task.sub_contractor %>
@@ -36,5 +36,9 @@
     </tbody>
   </table>
 <% else %>
-  <i>There are no tasks</i>
+  <% if !logged_in? %>
+    <i>You do not have permission to view tasks</i>
+  <% else %>
+    <i>There are no tasks</i>
+  <% end %>
 <% end %>

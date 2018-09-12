@@ -16,7 +16,7 @@
     <%= form.text_field :title %>
   </div>
 
-  <% if @jobs.any? %>
+  <% if @jobs %>
     <%= form.label :job_id %>
     <%= form.select :job_id, options_for_select(
       @jobs.map{|j| [j.title, j.id]},
@@ -26,7 +26,7 @@
     <i>There are no jobs available</i>
   <% end %>
 
-  <% if @sub_contractors.any? %>
+  <% if @sub_contractors %>
     <%= form.label :sub_contractor_id %>
     <%= form.select :sub_contractor_id, options_for_select(
       @sub_contractors.map{|s| [s.name, s.id]},
