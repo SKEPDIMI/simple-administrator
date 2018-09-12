@@ -5,6 +5,7 @@
 <% else %>
   <h1>Jobs</h1>
 <% end %>
+
 <% if @jobs.any? %>
   <table>
     <thead>
@@ -21,6 +22,7 @@
 
     <tbody>
       <% @jobs.each do |job| %>
+        <% next if !current_user_has_low_permission_for_job(job) %>
         <tr>
           <td><%= link_to job.title, job %></td>
           <% if job.project_manager %>
@@ -36,8 +38,10 @@
           <td><%= job.start_date %></td>
           <td><%= job.end_date || 'Ongoing' %></td>
           <td><%= job.tasks.length %></td>
-          <td><%= link_to 'Edit', edit_job_path(job) %></td>
-          <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% if current_user_has_high_permission_for_job(job) %>
+            <td><%= link_to 'Edit', edit_job_path(job) %></td>
+            <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
@@ -49,6 +53,6 @@
 <% end %>
 <br>
 
-<% if logged_in? %>
+<% if current_user_has_high_permission_for_job %>
   <%= link_to 'New Job', new_job_path %>
 <% end %>

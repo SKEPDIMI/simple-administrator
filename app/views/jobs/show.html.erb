@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<% if we_have_permission_for_job?(@job) %>
+<% if current_user_has_low_permission_for_job(@job) %>
   <h2>
     <strong>Job:</strong>
     <%= @job.title %>
@@ -64,8 +64,11 @@
   <% end %>
   <%= link_to 'New Task', new_task_path %>
   <br>
-  <%= link_to 'Jobs', jobs_path %> | 
-  <%= link_to 'Edit', edit_job_path(@job) %>
+  <%= link_to 'All Jobs', jobs_path %>
+  <br/>
+
+  <%= link_to 'Edit', edit_job_path(@job) if current_user_has_high_permission_for_job %>
+  <%= link_to 'Destroy', @job, method: :delete, data: { confirm: 'Are you sure?' } %>
 <% else %>
   <i>You do not have permission to see this job</i><br>
   <%= link_to 'Jobs', jobs_path %>
