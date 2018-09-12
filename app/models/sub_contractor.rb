@@ -5,4 +5,5 @@ class SubContractor < ApplicationRecord
   
   has_many :tasks
   has_many :jobs, through: :tasks
+  has_many :workers, dependent: :destroy
 end

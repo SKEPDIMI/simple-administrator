@@ -15,7 +15,7 @@
   </p>
   <p>
     <strong>Subcontractor</strong>
-    <%= @worker.sub_contractor.name%>
+    <%= link_to @worker.sub_contractor.name, @worker.sub_contractor %>
   </p>
 
   <%= link_to 'Edit', edit_worker_path(@worker) %> |
