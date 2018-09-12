@@ -16,20 +16,22 @@
     <%= form.text_field :title %>
   </div>
 
-  <%= form.label :job_id %>
-  <%= form.select :job_id do %>
-    <% @jobs.each do |j| -%>
-      <%= content_tag(:option, j.title, value: j.id) %>
-    <% end %>
+  <% if @jobs.any? %>
+    <%= form.label :job_id %>
+    <%= form.select :job_id, options_for_select(
+      @jobs.map{|j| [j.title, j.id]},
+      @task.job_id
+    ) %>
+  <% else %>
+    <i>There are no jobs available</i>
   <% end %>
 
   <% if @sub_contractors.any? %>
     <%= form.label :sub_contractor_id %>
-    <%= form.select :sub_contractor_id do %>
-      <% @sub_contractors.each do |s| %>
-        <%= content_tag(:option, s.name, value: s.id) %>
-      <% end %>
-    <% end %>
+    <%= form.select :sub_contractor_id, options_for_select(
+      @sub_contractors.map{|s| [s.name, s.id]},
+      @task.sub_contractor_id
+    ) %>
 
     <div class="actions">
       <%= form.submit %>

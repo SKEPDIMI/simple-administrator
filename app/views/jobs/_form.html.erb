@@ -29,22 +29,20 @@
   <% if current_user_is_admin %>
     <% if @project_managers.any? %>
       <%= form.label 'Project manager' %>
-      <%= form.select :project_manager_id do %>
-        <% @project_managers.each do |s| -%>
-          <%= content_tag(:option, "#{s.first_name} #{s.last_name}", value: s.id) %>
-        <% end %>
-      <% end %>
+      <%= form.select :project_manager_id, options_for_select(
+        @project_managers.map {|p| ["#{p.first_name} #{p.last_name}", p.id]},
+        @job.project_manager_id
+      ) %>
     <% else %>
       <i>There are no project managers available!</i>
     <% end %>
   <% end %>
 
   <%= form.label 'Project manager' %>
-  <%= form.select :superintendent_id do %>
-    <% @superintendents.each do |s| -%>
-      <%= content_tag(:option, "#{s.first_name} #{s.last_name}", value: s.id) %>
-    <% end %>
-  <% end %>
+  <%= form.select :superintendent_id, options_for_select(
+    @superintendents.map {|s| ["#{s.first_name} #{s.last_name}", s.id]},
+    @job.superintendent_id
+  ) %>
   <div class="actions">
     <%= form.submit %>
   </div>

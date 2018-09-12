@@ -52,11 +52,11 @@
     <div class="field">
       <div class="field">
         <%= form.label :role %>
-        <%= form.select :role do %>
-          <% [['Admin', 1], ['Manager', 2], ['SuperIntendent', 3]].each do |c| -%>
-            <%= content_tag(:option, c.first, value: c.last) %>
-          <% end %>
-        <% end %>
+        <%= form.select :role, options_for_select([
+          ['Admin', 1],
+          ['Manager', 2],
+          ['Superintendent', 3]
+        ]) %>
       </div>
     </div>
   <% end %>

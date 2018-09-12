@@ -28,11 +28,10 @@
     </div>
 
     <%= form.label :sub_contractor_id %>
-    <%= form.select :sub_contractor_id do %>
-      <% @sub_contractors.each do |s| -%>
-        <%= content_tag(:option, s.name, value: s.id) %>
-      <% end %>
-    <% end %>
+    <%= form.select :sub_contractor_id, options_for_select(
+      @sub_contractors.map{|s| [s.name, s.id]},
+      @worker.sub_contractor_id
+    ) %>
 
     <div class="actions">
       <%= form.submit %>
