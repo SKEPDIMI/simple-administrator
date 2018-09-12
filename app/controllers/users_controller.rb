@@ -4,7 +4,8 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    # only admin can see all users
+    @users = current_user_is_admin ? User.all : []
   end
 
   # GET /users/1
@@ -99,7 +100,13 @@ class UsersController < ApplicationController
     def set_user
       return nil if !params[:id]
 
-      @user = User.find(params[:id])
+      user = User.find(params[:id])
+
+      if same_user?(user) or current_user_is_admin
+        @user = user
+      else
+        @user = nil
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
