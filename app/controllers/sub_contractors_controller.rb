@@ -2,7 +2,7 @@ class SubContractorsController < ApplicationController
   before_action :set_sub_contractor, only: [:show, :edit, :update, :destroy]
   
   def index
-    @sub_contractors = SubContractor.all || []
+    @sub_contractors = logged_in? ? SubContractor.all : []
   end
   def show
   end
