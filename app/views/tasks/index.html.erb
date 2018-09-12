@@ -22,7 +22,11 @@
         <% next if !we_have_permission_for_job?(task.job) %>
         <tr>
           <td><%= task.title %></td>
-          <td><%= link_to task.sub_contractor.name, task.sub_contractor %></td>
+          <% if task.sub_contractor %>
+            <td><%= link_to task.sub_contractor.name, task.sub_contractor %></td>
+          <% else %>
+            <td><i>No subcontractor available</i></td>
+          <% end %>
           <td><%= link_to task.job.title, task.job %></td>
           <td><%= link_to 'Show', task %></td>
           <td><%= link_to 'Edit', edit_task_path(task) %></td>
