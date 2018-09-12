@@ -68,12 +68,19 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/1.json
   def update
     respond_to do |format|
-      if @job.update(job_params)
-        format.html { redirect_to @job, notice: 'Job was successfully updated.' }
-        format.json { render :show, status: :ok, location: @job }
+      if current_user_has_high_permission_for_job(@job)
+        if @job.update(job_params)
+          format.html { redirect_to @job, notice: 'Job was successfully updated.' }
+          format.json { render :show, status: :ok, location: @job }
+        else
+          format.html { render :edit }
+          format.json { render json: @job.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
+        @job.errors.add(:_, 'You do not have permission to update jobs')
+
+        format.html { render :index }
+        format.json { render json: @job.errors, status: :unauthorized }
       end
     end
   end
@@ -81,10 +88,16 @@ class JobsController < ApplicationController
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy
-    @job.destroy
     respond_to do |format|
-      format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
-      format.json { head :no_content }
+      if current_user_has_high_permission_for_job(@job)
+        @job.destroy
+
+        format.html { redirect_to jobs_url, notice: 'Job was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { render :index, notice: 'You cannot destroy jobs' }
+        format.json { render json: @job.errors, status: :unauthorized }
+      end
     end
   end
 
@@ -93,13 +106,9 @@ class JobsController < ApplicationController
     def set_job
       return nil if !params[:id]
 
-      @job = Job.find(params[:id])
+      selected_job = Job.find(params[:id])
 
-      if we_have_permission_for_job?(@job)
-        return @job
-      else
-        return nil
-      end
+      @job = selected_job if current_user_has_low_permission_for_job(selected_job)
     end
 
     def set_users
