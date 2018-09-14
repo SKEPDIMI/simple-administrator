@@ -34,6 +34,8 @@ class UsersController < ApplicationController
       @user.role = provided_role.to_i
     elsif existing_permission_code  
       @user.role = existing_permission_code.role.to_i
+    else
+      @user.role = 0 # This is an invalid role, respond with error
     end
 
     respond_to do |format|
