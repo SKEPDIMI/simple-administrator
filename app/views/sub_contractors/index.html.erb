@@ -16,10 +16,8 @@
         <tr>
           <td><%= link_to sub_contractor.name, sub_contractor %></td>
           <td><%= sub_contractor.tasks.length %></td>
-          <% if logged_in? %>
-            <td><%= link_to 'Edit', edit_sub_contractor_path(sub_contractor) %></td>
-            <td><%= link_to 'Destroy', sub_contractor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <% end %>
+          <td><%= link_to 'Edit', edit_sub_contractor_path(sub_contractor) %></td>
+          <td><%= link_to 'Destroy', sub_contractor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
     </tbody>
