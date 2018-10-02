@@ -38,7 +38,7 @@
     <% end %>
   <% end %>
 
-  <%= form.label 'Project manager' %>
+  <%= form.label 'Superintendent' %>
   <%= form.select :superintendent_id, options_for_select(
     @superintendents.map {|s| ["#{s.first_name} #{s.last_name}", s.id]},
     @job.superintendent_id
